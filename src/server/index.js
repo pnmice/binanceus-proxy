@@ -17,7 +17,7 @@ const getServer = async (client) => {
     });
 
     router.use(createProxyMiddleware({
-        target: 'https://api.binance.us', changeOrigin: true
+        target: 'https://api.binance.us', changeOrigin: true, logLevel: 'debug'
     }));
 
     app.use("/", router);
