@@ -1,8 +1,9 @@
 ---
 version: '3'
 services:
-  proxy:
-    build: .
-    container_name: binance-proxy
+  binanceus-proxy:
+    image: pnmice/binanceus-proxy:latest
+    container_name: binanceus-proxy
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - 8090:8090

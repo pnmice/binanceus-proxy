@@ -7,7 +7,7 @@ All other calls are proxied as usual.
 
 Start the docker instance and then point freqtrade to it, rate limit can be disabled:
 ```
-docker pull  pnmice/binanceus-proxy:1.0-js
+docker pull pnmice/binanceus-proxy:1.2.7
 
     "exchange": {
         "name": "binance",
