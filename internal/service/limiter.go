@@ -17,7 +17,7 @@ var (
 func RateWait(ctx context.Context, class Class, method, path string, query url.Values) {
 	weight := 1
 	switch path {
-	case "/fapi/v1/klines":
+	case "/api/v1/klines":
 		weight = 5
 		limitInt, _ := strconv.Atoi(query.Get("limit"))
 		if limitInt >= 1 && limitInt < 100 {
@@ -42,7 +42,7 @@ func RateWait(ctx context.Context, class Class, method, path string, query url.V
 		} else if limitInt == 5000 {
 			weight = 50
 		}
-	case "/fapi/v1/depth":
+	case "/api/v1/depth":
 		limitInt, _ := strconv.Atoi(query.Get("limit"))
 		if limitInt >= 5 && limitInt <= 50 {
 			weight = 2
@@ -53,17 +53,17 @@ func RateWait(ctx context.Context, class Class, method, path string, query url.V
 		} else if limitInt == 1000 {
 			weight = 20
 		}
-	case "/api/v3/ticker/24hr", "/fapi/v1/ticker/24hr":
+	case "/api/v3/ticker/24hr", "/api/v1/ticker/24hr":
 		if query.Get("symbol") == "" {
 			weight = 40
 		}
-	case "/api/v3/exchangeInfo", "/fapi/v1/exchangeInfo", "/api/v3/account", "/api/v3/myTrades":
+	case "/api/v3/exchangeInfo", "/api/v1/exchangeInfo", "/api/v3/account", "/api/v3/myTrades":
 		weight = 10
 	case "/api/v3/order":
 		if method == http.MethodGet {
 			weight = 2
 		}
-	case "/fapi/v1/userTrades", "/fapi/v2/account":
+	case "/api/v1/userTrades", "/api/v2/account":
 		weight = 5
 
 	}

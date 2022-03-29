@@ -55,7 +55,7 @@ Help Options:
   -h, --help                   Show this help message
 ```
 ### 🪙 Example Usage with Freqtrade
-**Freqtrade** needs to be aware, that the **API endpoint** for querying the exchange is not the public endpoint, which is usually `https://api.binance.com` but instead queries are being proxied. To achieve that, the appropriate `config.json` needs to be adjusted in the `{ exchange: { urls: { api: public: "..."} } }` section.
+**Freqtrade** needs to be aware, that the **API endpoint** for querying the exchange is not the public endpoint, which is usually `https://api.binance.us` but instead queries are being proxied. To achieve that, the appropriate `config.json` needs to be adjusted in the `{ exchange: { urls: { api: public: "..."} } }` section.
 
 ```json
 {
@@ -82,12 +82,12 @@ This example assumes, that `binance-proxy` is running on the same host as the co
 ## ➡️ Supported API endpoints for caching
 | Endpoint | Market | Purpose |  Socket Update Interval | Comments |
 |----------|--------|---------|----------|---------|
-|`/api/v3/klines`<br/>`/fapi/v1/klines`| spot/futures | Kline/candlestick bars for a symbol|~ 2s|Websocket is closed if there is no following request after `2 * interval_time` (for example: A websocket for a symbol on `5m` timeframe is closed after 10 minutes.<br/><br/>Following requests for `klines` can not be delivered from the websocket cache:<br/><li>`limit` parameter is > 1000</ul><li>`startTime` or `endTime` have been specified</ul>|
-|`/api/v3/depth`<br/>`/fapi/v1/depth`|spot/futures|Order Book (Depth)|100ms|Websocket is closed if there is no following request after 2 minutes.<br/><br/>The `depth` endpoint serves only a maximum depth of 20.|
+|`/api/v3/klines`<br/>`/api/v1/klines`| spot/futures | Kline/candlestick bars for a symbol|~ 2s|Websocket is closed if there is no following request after `2 * interval_time` (for example: A websocket for a symbol on `5m` timeframe is closed after 10 minutes.<br/><br/>Following requests for `klines` can not be delivered from the websocket cache:<br/><li>`limit` parameter is > 1000</ul><li>`startTime` or `endTime` have been specified</ul>|
+|`/api/v3/depth`<br/>`/api/v1/depth`|spot/futures|Order Book (Depth)|100ms|Websocket is closed if there is no following request after 2 minutes.<br/><br/>The `depth` endpoint serves only a maximum depth of 20.|
 |`/api/v3/ticker/24hr`|spot|24hr ticker price change statistics|2s/100ms (see comments)|Websocket is closed if there is no following request after 2 minutes.<br/><br/>For faster updates the values for <li>`lastPrice`</ul><li>`bidPrice`</ul><li>`askPrice`</ul><br>are taken from the `bookTicker` which is updated in an interval of 100ms.|
-|`/api/v3/exchangeInfo`<br/>`/fapi/v1/exchangeInfo`| spot/futures| Current exchange trading rules and symbol information|60s (see comments)|`exchangeInfo` is fetched periodically via REST every 60 seconds. It is not a websocket endpoint but just being cached during runtime.|
+|`/api/v3/exchangeInfo`<br/>`/api/v1/exchangeInfo`| spot/futures| Current exchange trading rules and symbol information|60s (see comments)|`exchangeInfo` is fetched periodically via REST every 60 seconds. It is not a websocket endpoint but just being cached during runtime.|
 
-> 🚨 Every **other** REST query to an endpoint is being **forwarded** 1:1 to the **API** at https://api.binance.com !
+> 🚨 Every **other** REST query to an endpoint is being **forwarded** 1:1 to the **API** at https://api.binance.us !
 
 
 ## ⚙️ Commands & Options

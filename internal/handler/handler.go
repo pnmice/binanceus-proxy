@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"binance-proxy/internal/service"
 	"context"
 	"fmt"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"time"
+
+	"binance-proxy/internal/service"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -38,16 +39,16 @@ func (s *Handler) Router(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 
 	switch r.URL.Path {
-	case "/api/v3/klines", "/fapi/v1/klines":
+	case "/api/v3/klines", "/api/v1/klines":
 		s.klines(w, r)
 
-	case "/api/v3/depth", "/fapi/v1/depth":
+	case "/api/v3/depth", "/api/v1/depth":
 		s.depth(w, r)
 
 	case "/api/v3/ticker/24hr":
 		s.ticker(w, r)
 
-	case "/api/v3/exchangeInfo", "/fapi/v1/exchangeInfo":
+	case "/api/v3/exchangeInfo", "/api/v1/exchangeInfo":
 		s.exchangeInfo(w, r)
 
 	default:
@@ -69,11 +70,11 @@ func (s *Handler) reverseProxy(w http.ResponseWriter, r *http.Request) {
 
 	var u *url.URL
 	if s.class == service.SPOT {
-		r.Host = "api.binance.com"
-		u, _ = url.Parse("https://api.binance.com")
+		r.Host = "api.binance.us"
+		u, _ = url.Parse("https://api.binance.us")
 	} else {
-		r.Host = "fapi.binance.com"
-		u, _ = url.Parse("https://fapi.binance.com")
+		r.Host = "api.binance.us"
+		u, _ = url.Parse("https://api.binance.us")
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(u)

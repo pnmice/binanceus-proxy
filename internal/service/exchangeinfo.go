@@ -79,11 +79,11 @@ func (s *ExchangeInfoSrv) reTryRefreshExchangeInfo() {
 func (s *ExchangeInfoSrv) refreshExchangeInfo() error {
 	var url string
 	if s.si.Class == SPOT {
-		url = "https://api.binance.com/api/v3/exchangeInfo"
+		url = "https://api.binance.us/api/v3/exchangeInfo"
 		RateWait(s.ctx, s.si.Class, http.MethodGet, "/api/v3/exchangeInfo", nil)
 	} else {
-		url = "https://fapi.binance.com/fapi/v1/exchangeInfo"
-		RateWait(s.ctx, s.si.Class, http.MethodGet, "/fapi/v1/exchangeInfo", nil)
+		url = "https://api.binance.us/api/v1/exchangeInfo"
+		RateWait(s.ctx, s.si.Class, http.MethodGet, "/api/v1/exchangeInfo", nil)
 	}
 
 	resp, err := http.Get(url)

@@ -112,7 +112,7 @@ func (s *KlinesSrv) initKlineData() {
 				Symbol(s.si.Symbol).Interval(s.si.Interval).Limit(1000).
 				Do(s.ctx)
 		} else {
-			RateWait(s.ctx, s.si.Class, http.MethodGet, "/fapi/v1/klines", url.Values{
+			RateWait(s.ctx, s.si.Class, http.MethodGet, "/api/v1/klines", url.Values{
 				"limit": []string{"1000"},
 			})
 			klines, err = futures.NewClient("", "").NewKlinesService().
