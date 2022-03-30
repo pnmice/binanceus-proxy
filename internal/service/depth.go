@@ -1,10 +1,11 @@
 package service
 
 import (
-	"binance-proxy/internal/tool"
 	"context"
 	"sync"
 	"time"
+
+	"binance-proxy/internal/tool"
 
 	log "github.com/sirupsen/logrus"
 
@@ -88,6 +89,8 @@ func (s *DepthSrv) GetDepth() *Depth {
 }
 
 func (s *DepthSrv) wsHandlerFutures(event *futures.WsDepthEvent) {
+	log.Tracef("depth websocket message received: '%+v'", event)
+
 	s.rw.Lock()
 	defer s.rw.Unlock()
 
@@ -102,10 +105,11 @@ func (s *DepthSrv) wsHandlerFutures(event *futures.WsDepthEvent) {
 		Bids:         event.Bids,
 		Asks:         event.Asks,
 	}
-	log.Tracef("%s %s depth websocket message received", s.si.Class, s.si.Symbol)
 }
 
 func (s *DepthSrv) wsHandler(event *spot.WsPartialDepthEvent) {
+	log.Tracef("depth websocket message received: '%+v'", event)
+
 	s.rw.Lock()
 	defer s.rw.Unlock()
 
@@ -120,8 +124,6 @@ func (s *DepthSrv) wsHandler(event *spot.WsPartialDepthEvent) {
 		Bids:         event.Bids,
 		Asks:         event.Asks,
 	}
-	log.Tracef("%s %s depth websocket message received", s.si.Class, s.si.Symbol)
-
 }
 
 func (s *DepthSrv) errHandler(err error) {

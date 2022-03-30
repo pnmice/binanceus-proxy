@@ -1,9 +1,10 @@
 package service
 
 import (
-	"binance-proxy/internal/tool"
 	"context"
 	"sync"
+
+	"binance-proxy/internal/tool"
 
 	log "github.com/sirupsen/logrus"
 
@@ -148,6 +149,8 @@ func (s *TickerSrv) GetTicker() *Ticker24hr {
 }
 
 func (s *TickerSrv) wsHandlerBookTicker(event *spot.WsBookTickerEvent) {
+	log.Tracef("bookTicker websocket message received: '%+v'", event)
+
 	s.rw.Lock()
 	defer s.rw.Unlock()
 
@@ -158,10 +161,11 @@ func (s *TickerSrv) wsHandlerBookTicker(event *spot.WsBookTickerEvent) {
 		AskPrice:    event.BestAskPrice,
 		AskQuantity: event.BestAskQty,
 	}
-	log.Tracef("%s %s bookTicker websocket message received", s.si.Class, s.si.Symbol)
 }
 
 func (s *TickerSrv) wsHandlerTicker24hr(event *spot.WsMarketStatEvent) {
+	log.Tracef("ticker24hr websocket message received: '%+v'", event)
+
 	s.rw.Lock()
 	defer s.rw.Unlock()
 
@@ -190,7 +194,6 @@ func (s *TickerSrv) wsHandlerTicker24hr(event *spot.WsMarketStatEvent) {
 		LastID:             event.LastID,
 		Count:              event.Count,
 	}
-	log.Tracef("%s %s ticker24hr websocket message received", s.si.Class, s.si.Symbol)
 }
 
 func (s *TickerSrv) errHandler(err error) {

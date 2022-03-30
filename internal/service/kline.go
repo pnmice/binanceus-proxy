@@ -1,12 +1,13 @@
 package service
 
 import (
-	"binance-proxy/internal/tool"
 	"container/list"
 	"context"
 	"net/http"
 	"net/url"
 	"sync"
+
+	"binance-proxy/internal/tool"
 
 	log "github.com/sirupsen/logrus"
 
@@ -171,6 +172,8 @@ func (s *KlinesSrv) initKlineData() {
 }
 
 func (s *KlinesSrv) wsHandler(event interface{}) {
+	log.Tracef("klines websocket message received: '%+v'", event)
+
 	if s.klinesList == nil {
 		s.initKlineData()
 	}
@@ -206,8 +209,6 @@ func (s *KlinesSrv) wsHandler(event interface{}) {
 			TakerBuyQuoteAssetVolume: vi.Kline.ActiveBuyQuoteVolume,
 		}
 	}
-
-	log.Tracef("%s %s@%s kline websocket message received for open timestamp %d", s.si.Class, s.si.Symbol, s.si.Interval, k.OpenTime)
 
 	if s.klinesList.Back().Value.(*Kline).OpenTime < k.OpenTime {
 		s.klinesList.PushBack(k)
